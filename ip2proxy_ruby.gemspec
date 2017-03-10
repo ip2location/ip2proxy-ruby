@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "1.0.1"
+  s.version       = "1.0.2"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
     "ip2proxy_ruby.gemspec",
     "example.rb",
     "lib/ip2proxy_ruby.rb",
-    "lib/ip2proxy_ruby/database_config.rb",
+    "lib/ip2proxy_ruby/i2p_database_config.rb",
     "lib/ip2proxy_ruby/i2p_ip_data.rb",
     "lib/ip2proxy_ruby/i2p_string_data.rb",
     "lib/ip2proxy_ruby/ip2proxy_config.rb",

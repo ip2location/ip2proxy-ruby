@@ -1,4 +1,4 @@
-class DbConfig 
+class I2pDbConfig 
   COLUMNS = { 
      :COUNTRY                  => [0, 2, 3, 3, 3],
      :REGION                   => [0, 0, 0, 4, 4],

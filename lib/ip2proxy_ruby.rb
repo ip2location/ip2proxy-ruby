@@ -1,7 +1,7 @@
 require 'bindata'
 require 'ipaddr'
 require_relative 'ip2proxy_ruby/ip2proxy_config'
-require_relative 'ip2proxy_ruby/database_config'
+require_relative 'ip2proxy_ruby/i2p_database_config'
 require_relative 'ip2proxy_ruby/i2p_string_data'
 require_relative 'ip2proxy_ruby/i2p_ip_data'
 require_relative 'ip2proxy_ruby/ip2proxy_record'
@@ -9,7 +9,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday 
   
-  VERSION = '1.0.1'
+  VERSION = '1.0.2'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
   
@@ -21,7 +21,7 @@ class Ip2proxy
     self.databaseyear = 2000 + i2p.databaseyear
     self.databasemonth = i2p.databasemonth
     self.databaseday = i2p.databaseday
-    self.database = DbConfig.setup_database(self.db_index)
+    self.database = I2pDbConfig.setup_database(self.db_index)
     self.ipv4databasecount = i2p.ipv4databasecount
     self.ipv4databaseaddr = i2p.ipv4databaseaddr
     self.ipv6databasecount = i2p.ipv6databasecount

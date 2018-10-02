@@ -9,7 +9,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday 
   
-  VERSION = '1.0.2'
+  VERSION = '1.0.3'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
   
@@ -37,15 +37,15 @@ class Ip2proxy
     self.file.close
   end
   
-  def getModuleVersion()
+  def get_module_version()
     return VERSION
   end
   
-  def getPackageVersion()
+  def get_package_version()
     return (self.db_index).to_s
   end
   
-  def getDatabaseVersion()
+  def get_database_version()
     return (self.databaseyear).to_s + "." + (self.databasemonth).to_s + "." + (self.databaseday).to_s
   end
   
@@ -77,7 +77,7 @@ class Ip2proxy
     end
   end
   
-  def getCountryShort(ip)
+  def get_country_short(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -92,7 +92,7 @@ class Ip2proxy
     return country_short
   end
   
-  def getCountryLong(ip)
+  def get_country_long(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -107,7 +107,7 @@ class Ip2proxy
     return country_long
   end
   
-  def getRegion(ip)
+  def get_region(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -122,7 +122,7 @@ class Ip2proxy
     return region
   end
   
-  def getCity(ip)
+  def get_city(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -137,7 +137,7 @@ class Ip2proxy
     return city
   end
   
-  def getISP(ip)
+  def get_isp(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -152,7 +152,7 @@ class Ip2proxy
     return isp
   end
   
-  def getProxyType(ip)
+  def get_proxytype(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -167,7 +167,7 @@ class Ip2proxy
     return proxytype
   end
   
-  def isProxy(ip)
+  def is_proxy(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)
@@ -186,7 +186,7 @@ class Ip2proxy
     return isproxy
   end
   
-  def getAll(ip)
+  def get_all(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
         rec = get_record(ip)

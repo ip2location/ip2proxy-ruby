@@ -1,3 +1,6 @@
+[![Latest Stable Version](https://img.shields.io/gem/v/ip2proxy_ruby.svg)](https://rubygems.org/gems/ip2proxy_ruby)
+[![Total Downloads](https://img.shields.io/gem/dt/ip2proxy_ruby.svg)](https://rubygems.org/gems/ip2proxy_ruby)
+
 # IP2Proxy Ruby Library
 
 This module allows user to query an IP address if it was being used as open proxy, web proxy, VPN anonymizer and TOR exits. It lookup the proxy IP address from **IP2Proxy BIN Data** file. This data file can be downloaded at

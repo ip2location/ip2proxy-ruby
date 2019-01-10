@@ -2,16 +2,16 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "1.0.3"
+  s.version       = "1.0.4"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
   s.summary       = "IP2Proxy Ruby library"
-  s.description   = "Ruby library for IP2Proxy"
+  s.description   = "The official IP2Proxy Ruby library to detect anonymous proxy, VPN and Tor exit nodes."
   s.homepage      = "https://github.com/ip2location/ip2proxy-ruby"
   s.licenses      = ["MIT"]
   s.require_paths = ["lib"]
-  
+
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md"
@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
     ".document",
     ".gitignore",
     "Gemfile",
-    "Gemfile.lock",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
@@ -37,7 +36,15 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "rb/data/IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP.SAMPLE.BIN"
   ]
-  
+
+  if s.respond_to?(:metadata=)
+    s.metadata = {
+      "bug_tracker_uri" => "https://github.com/ip2location/ip2proxy-ruby/issues",
+      "homepage_uri" => "https://www.ip2location.com",
+      "source_code_uri" => "https://github.com/ip2location/ip2proxy-ruby",
+    }
+  end
+
   if s.respond_to? :specification_version then
     s.specification_version = 4
 

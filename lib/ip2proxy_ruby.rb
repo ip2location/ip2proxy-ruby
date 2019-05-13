@@ -8,11 +8,11 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday 
-  
-  VERSION = '1.0.4'
+
+  VERSION = '2.0.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
-  
+
   def open(url)
     self.file = File.open(File.expand_path url, 'rb')
     i2p = Ip2proxyConfig.read(file)
@@ -32,33 +32,33 @@ class Ip2proxy
     self.record_class6 = (Ip2ProxyRecord.init database, 6)
     self
   end
-  
+
   def close()
     self.file.close
   end
-  
+
   def get_module_version()
     return VERSION
   end
-  
+
   def get_package_version()
     return (self.db_index).to_s
   end
-  
+
   def get_database_version()
     return (self.databaseyear).to_s + "." + (self.databasemonth).to_s + "." + (self.databaseday).to_s
   end
-  
+
   def get_record(ip)
     ipno = IPAddr.new(ip, Socket::AF_UNSPEC)
     self.ip_version = ipno.ipv4? ? 4 : 6
     self.v4 = ipno.ipv4?
     self.count = ipno.ipv4? ? self.ipv4databasecount + 0 : self.ipv6databasecount + 0
     self.base_addr = (ipno.ipv4? ? self.ipv4databaseaddr - 1 : self.ipv6databaseaddr - 1)
-    
+
     ipnum = ipno.to_i + 0
     col_length = columns * 4
-    
+
     if ipv4indexbaseaddr > 0 || ipv6indexbaseaddr > 0
         indexpos = 0
         case ip_version
@@ -76,7 +76,7 @@ class Ip2proxy
         return self.record = bsearch(0, self.count, ipnum, self.base_addr, col_length)
     end
   end
-  
+
   def get_country_short(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -91,7 +91,7 @@ class Ip2proxy
     end
     return country_short
   end
-  
+
   def get_country_long(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -106,7 +106,7 @@ class Ip2proxy
     end
     return country_long
   end
-  
+
   def get_region(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -121,7 +121,7 @@ class Ip2proxy
     end
     return region
   end
-  
+
   def get_city(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -136,7 +136,7 @@ class Ip2proxy
     end
     return city
   end
-  
+
   def get_isp(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -151,7 +151,7 @@ class Ip2proxy
     end
     return isp
   end
-  
+
   def get_proxytype(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -166,7 +166,82 @@ class Ip2proxy
     end
     return proxytype
   end
-  
+
+  def get_domain(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            domain = (defined?(rec.domain) && rec.domain != '') ? rec.domain : FIELD_NOT_SUPPORTED
+        else
+            domain = INVALID_IP_ADDRESS
+        end
+    else
+        domain = INVALID_IP_ADDRESS
+    end
+    return domain
+  end
+
+  def get_usagetype(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            usagetype = (defined?(rec.usagetype) && rec.usagetype != '') ? rec.usagetype : FIELD_NOT_SUPPORTED
+        else
+            usagetype = INVALID_IP_ADDRESS
+        end
+    else
+        usagetype = INVALID_IP_ADDRESS
+    end
+    return usagetype
+  end
+
+  def get_asn(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            asn = (defined?(rec.asn) && rec.asn != '') ? rec.asn : FIELD_NOT_SUPPORTED
+        else
+            asn = INVALID_IP_ADDRESS
+        end
+    else
+        asn = INVALID_IP_ADDRESS
+    end
+    return asn
+  end
+
+  def get_as(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            as = (defined?(rec.as) && rec.as != '') ? rec.as : FIELD_NOT_SUPPORTED
+        else
+            as = INVALID_IP_ADDRESS
+        end
+    else
+        as = INVALID_IP_ADDRESS
+    end
+    return as
+  end
+
+  def get_last_seen(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            last_seen = (defined?(rec.lastseen) && rec.lastseen != '') ? rec.lastseen : FIELD_NOT_SUPPORTED
+        else
+            last_seen = INVALID_IP_ADDRESS
+        end
+    else
+        last_seen = INVALID_IP_ADDRESS
+    end
+    return last_seen
+  end
+
   def is_proxy(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -175,7 +250,7 @@ class Ip2proxy
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
-                isproxy = (rec.proxytype == '-') ? 0 : (rec.proxytype == 'DCH') ? 2 : 1
+                isproxy = (rec.proxytype == '-') ? 0 : (rec.proxytype == 'DCH' || rec.proxytype == 'SES') ? 2 : 1
             end
         else
             isproxy = -1
@@ -185,7 +260,7 @@ class Ip2proxy
     end
     return isproxy
   end
-  
+
   def get_all(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -197,11 +272,16 @@ class Ip2proxy
             city = (defined?(rec.city) && rec.city != '') ? rec.city : FIELD_NOT_SUPPORTED
             isp = (defined?(rec.isp) && rec.isp != '') ? rec.isp : FIELD_NOT_SUPPORTED
             proxytype = (defined?(rec.proxytype) && rec.proxytype != '') ? rec.proxytype : FIELD_NOT_SUPPORTED
-            
+            domain = (defined?(rec.domain) && rec.domain != '') ? rec.domain : FIELD_NOT_SUPPORTED
+            usagetype = (defined?(rec.usagetype) && rec.usagetype != '') ? rec.usagetype : FIELD_NOT_SUPPORTED
+            asn = (defined?(rec.asn) && rec.asn != '') ? rec.asn : FIELD_NOT_SUPPORTED
+            as = (defined?(rec.as) && rec.as != '') ? rec.as : FIELD_NOT_SUPPORTED
+            last_seen = (defined?(rec.lastseen) && rec.lastseen != '') ? rec.lastseen : FIELD_NOT_SUPPORTED
+
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
-                isproxy = (rec.proxytype == '-') ? 0 : (rec.proxytype == 'DCH') ? 2 : 1
+                isproxy = (rec.proxytype == '-') ? 0 : (rec.proxytype == 'DCH' || rec.proxytype == 'SES') ? 2 : 1
             end
         else
             country_short = INVALID_IP_ADDRESS
@@ -210,6 +290,11 @@ class Ip2proxy
             city = INVALID_IP_ADDRESS
             isp = INVALID_IP_ADDRESS
             proxytype = INVALID_IP_ADDRESS
+            domain = INVALID_IP_ADDRESS
+            usagetype = INVALID_IP_ADDRESS
+            asn = INVALID_IP_ADDRESS
+            as = INVALID_IP_ADDRESS
+            last_seen = INVALID_IP_ADDRESS
             isproxy = -1
         end
     else
@@ -219,9 +304,14 @@ class Ip2proxy
         city = INVALID_IP_ADDRESS
         isp = INVALID_IP_ADDRESS
         proxytype = INVALID_IP_ADDRESS
+        domain = INVALID_IP_ADDRESS
+        usagetype = INVALID_IP_ADDRESS
+        asn = INVALID_IP_ADDRESS
+        as = INVALID_IP_ADDRESS
+        last_seen = INVALID_IP_ADDRESS
         isproxy = -1
     end
-        
+
     results = {}
     results['is_proxy'] = isproxy
     results['proxy_type'] = proxytype
@@ -230,10 +320,15 @@ class Ip2proxy
     results['region'] = region
     results['city'] = city
     results['isp'] = isp
+    results['domain'] = domain
+    results['usagetype'] = usagetype
+    results['asn'] = asn
+    results['as'] = as
+    results['last_seen'] = last_seen
 
     return results
   end
-  
+
   def bsearch(low, high, ipnum, base_addr, col_length)
     while low <= high do
         mid = (low + high) >> 1
@@ -255,7 +350,7 @@ class Ip2proxy
         end
     end    
   end
-  
+
   def get_from_to(mid, base_addr, col_length)
     from_base = ( base_addr + mid * (col_length + (v4 ? 0 : 12)))
     file.seek(from_base)
@@ -264,17 +359,17 @@ class Ip2proxy
     ip_to = v4 ? file.read(4).unpack('V').first : readipv6(file)
     [ip_from, ip_to]
   end
-  
+
   def read32(indexp)
     file.seek(indexp - 1)
     return file.read(4).unpack('V').first
   end
-  
+
   def readipv6(filer)
     parts = filer.read(16).unpack('V*')
     return parts[0] + parts[1] * 4294967296 + parts[2] * 4294967296**2 + parts[3] * 4294967296**3
   end
-  
+
   private :get_record, :bsearch, :get_from_to, :read32, :readipv6
-  
+
 end

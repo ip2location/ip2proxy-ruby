@@ -2,12 +2,12 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "1.0.4"
+  s.version       = "2.0.0"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
   s.summary       = "IP2Proxy Ruby library"
-  s.description   = "The official IP2Proxy Ruby library to detect anonymous proxy, VPN and Tor exit nodes."
+  s.description   = "The official IP2Proxy Ruby library to detect VPN servers, open proxies, web proxies, Tor exit nodes, search engine robots and data center ranges using IP2Proxy BIN database. Other information available includes proxy type, country, state, city, ISP, domain name, usage type, AS number, AS name and last seen date."
   s.homepage      = "https://github.com/ip2location/ip2proxy-ruby"
   s.licenses      = ["MIT"]
   s.require_paths = ["lib"]

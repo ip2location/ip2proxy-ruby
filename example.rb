@@ -1,7 +1,7 @@
 require 'ip2proxy_ruby'
 
 # open IP2Proxy BIN database for proxy lookup
-i2p = Ip2proxy.new.open("./data/IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN.BIN")
+i2p = Ip2proxy.new.open("./data/IP2PROXY-LITE-PX1.BIN")
 
 # get versioning information
 print 'Module Version: ' + i2p.get_module_version + "\n"

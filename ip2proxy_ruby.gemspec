@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "2.0.0"
+  s.version       = "2.1.0"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
     "spec/assets/IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP.SAMPLE.BIN",
     "spec/ip2proxy_ruby_spec.rb",
     "spec/spec_helper.rb",
-    "rb/data/IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP.SAMPLE.BIN"
+    "rb/data/IP2PROXY-LITE-PX1.BIN"
   ]
 
   if s.respond_to?(:metadata=)

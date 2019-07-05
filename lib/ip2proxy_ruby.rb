@@ -9,7 +9,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday 
 
-  VERSION = '2.0.0'
+  VERSION = '2.1.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
 
@@ -51,23 +51,28 @@ class Ip2proxy
 
   def get_record(ip)
     ipno = IPAddr.new(ip, Socket::AF_UNSPEC)
-    self.ip_version = ipno.ipv4? ? 4 : 6
-    self.v4 = ipno.ipv4?
-    self.count = ipno.ipv4? ? self.ipv4databasecount + 0 : self.ipv6databasecount + 0
-    self.base_addr = (ipno.ipv4? ? self.ipv4databaseaddr - 1 : self.ipv6databaseaddr - 1)
-
-    ipnum = ipno.to_i + 0
+    self.ip_version, ipnum = validateip(ipno)
+    self.v4 = ip_version == 4 ? true : false
+    self.count = v4 ? self.ipv4databasecount + 0 : self.ipv6databasecount + 0
+    self.base_addr = (v4 ? self.ipv4databaseaddr - 1 : self.ipv6databaseaddr - 1)
     col_length = columns * 4
-
     if ipv4indexbaseaddr > 0 || ipv6indexbaseaddr > 0
         indexpos = 0
         case ip_version
         when 4
-            ipnum1_2 = (ipnum >> 16)
-            indexpos = ipv4indexbaseaddr + (ipnum1_2 << 3)
+            indexpos = ipv4indexbaseaddr + ((ipnum >> 16) << 3)
+            realipno = ipnum
+            # if ipnum reach MAX_IPV4_RANGE
+            if realipno == 4294967295
+                ipnum = realipno - 1
+            end
         when 6
-            ipnum1 = (ipnum / (2**112))
-            indexpos = ipv6indexbaseaddr + (ipnum1 << 3)
+            indexpos = ipv6indexbaseaddr + ((ipnum >> 112) << 3)
+            realipno = ipnum
+            # if ipnum reach MAX_IPV6_RANGE
+            if realipno == 340282366920938463463374607431768211455
+                ipnum = realipno - 1
+            end
         end
         low = read32(indexpos)
         high = read32(indexpos + 4)
@@ -277,7 +282,6 @@ class Ip2proxy
             asn = (defined?(rec.asn) && rec.asn != '') ? rec.asn : FIELD_NOT_SUPPORTED
             as = (defined?(rec.as) && rec.as != '') ? rec.as : FIELD_NOT_SUPPORTED
             last_seen = (defined?(rec.lastseen) && rec.lastseen != '') ? rec.lastseen : FIELD_NOT_SUPPORTED
-
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
@@ -311,7 +315,6 @@ class Ip2proxy
         last_seen = INVALID_IP_ADDRESS
         isproxy = -1
     end
-
     results = {}
     results['is_proxy'] = isproxy
     results['proxy_type'] = proxytype
@@ -325,7 +328,6 @@ class Ip2proxy
     results['asn'] = asn
     results['as'] = as
     results['last_seen'] = last_seen
-
     return results
   end
 
@@ -348,7 +350,7 @@ class Ip2proxy
                 low = mid + 1
             end
         end
-    end    
+    end
   end
 
   def get_from_to(mid, base_addr, col_length)
@@ -358,6 +360,38 @@ class Ip2proxy
     file.seek(from_base + col_length + (v4 ? 0 : 12))
     ip_to = v4 ? file.read(4).unpack('V').first : readipv6(file)
     [ip_from, ip_to]
+  end
+
+  def validateip(ip)
+    if ip.ipv4?
+        ipv = 4
+        ipnum = ip.to_i + 0
+    else
+        ipv = 6
+        ipnum = ip.to_i + 0
+        #reformat ipv4 address in ipv6 
+        if ipnum >= 281470681743360 && ipnum <= 281474976710655
+            ipv = 4
+            ipnum = ipnum - 281470681743360
+        end
+        #reformat 6to4 address to ipv4 address 2002:: to 2002:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF
+        if ipnum >= 42545680458834377588178886921629466624 && ipnum <= 42550872755692912415807417417958686719
+            ipv = 4
+            #bitshift right 80 bits
+            ipnum = ipnum >> 80
+            #bitwise modulus to get the last 32 bit
+            ipnum = ipnum % 4294967296
+        end
+        #reformat Teredo address to ipv4 address 2001:0000:: to 2001:0000:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:
+        if ipnum >= 42540488161975842760550356425300246528 && ipnum <= 42540488241204005274814694018844196863
+            ipv = 4
+            #bitwise not to invert binary
+            ipnum = ~ipnum
+            #bitwise modulus to get the last 32 bit
+            ipnum = ipnum % 4294967296
+        end
+    end
+    [ipv, ipnum]
   end
 
   def read32(indexp)

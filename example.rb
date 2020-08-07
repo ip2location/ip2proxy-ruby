@@ -21,6 +21,7 @@ print 'Usage Type: ' + i2p.get_usagetype('1.2.3.4') + "\n"
 print 'ASN: ' + i2p.get_asn('1.2.3.4') + "\n"
 print 'AS: ' + i2p.get_as('1.2.3.4') + "\n"
 print 'Last Seen: ' + i2p.get_last_seen('1.2.3.4') + "\n"
+print 'Threat: ' + i2p.get_threat('1.2.3.4') + "\n"
 
 # single function to get all proxy data returned in array
 record = i2p.get_all('1.2.3.4')
@@ -36,6 +37,7 @@ print 'Usage Type: ' + record['usagetype'] + "\n"
 print 'ASN: ' + record['asn'] + "\n"
 print 'AS: ' + record['as'] + "\n"
 print 'Last Seen: ' + record['last_seen'] + "\n"
+print 'Threat: ' + record['threat'] + "\n"
 
 # close IP2Proxy BIN database
 i2p.close()

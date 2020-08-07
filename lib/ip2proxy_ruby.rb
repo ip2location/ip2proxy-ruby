@@ -9,7 +9,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday 
 
-  VERSION = '2.1.0'
+  VERSION = '3.0.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
 
@@ -247,6 +247,21 @@ class Ip2proxy
     return last_seen
   end
 
+  def get_threat(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            threat = (defined?(rec.threat) && rec.threat != '') ? rec.threat : FIELD_NOT_SUPPORTED
+        else
+            threat = INVALID_IP_ADDRESS
+        end
+    else
+        threat = INVALID_IP_ADDRESS
+    end
+    return threat
+  end
+
   def is_proxy(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -282,6 +297,7 @@ class Ip2proxy
             asn = (defined?(rec.asn) && rec.asn != '') ? rec.asn : FIELD_NOT_SUPPORTED
             as = (defined?(rec.as) && rec.as != '') ? rec.as : FIELD_NOT_SUPPORTED
             last_seen = (defined?(rec.lastseen) && rec.lastseen != '') ? rec.lastseen : FIELD_NOT_SUPPORTED
+            threat = (defined?(rec.threat) && rec.threat != '') ? rec.threat : FIELD_NOT_SUPPORTED
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
@@ -299,6 +315,7 @@ class Ip2proxy
             asn = INVALID_IP_ADDRESS
             as = INVALID_IP_ADDRESS
             last_seen = INVALID_IP_ADDRESS
+            threat = INVALID_IP_ADDRESS
             isproxy = -1
         end
     else
@@ -313,6 +330,7 @@ class Ip2proxy
         asn = INVALID_IP_ADDRESS
         as = INVALID_IP_ADDRESS
         last_seen = INVALID_IP_ADDRESS
+        threat = INVALID_IP_ADDRESS
         isproxy = -1
     end
     results = {}
@@ -328,6 +346,7 @@ class Ip2proxy
     results['asn'] = asn
     results['as'] = as
     results['last_seen'] = last_seen
+    results['threat'] = threat
     return results
   end
 

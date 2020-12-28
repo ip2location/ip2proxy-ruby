@@ -31,10 +31,10 @@ Gem::Specification.new do |s|
     "lib/ip2proxy_ruby/i2p_string_data.rb",
     "lib/ip2proxy_ruby/ip2proxy_config.rb",
     "lib/ip2proxy_ruby/ip2proxy_record.rb",
-    "spec/assets/IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP.SAMPLE.BIN",
-    "spec/ip2proxy_ruby_spec.rb",
+    "spec/assets/PX10.SAMPLE.BIN",
+    "spec/ip2proxy_ruby_database_spec.rb",
     "spec/spec_helper.rb",
-    "rb/data/IP2PROXY-LITE-PX1.BIN"
+    "rb/data/PX10.SAMPLE.BIN"
   ]
 
   if s.respond_to?(:metadata=)

@@ -2,12 +2,12 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "3.0.1"
+  s.version       = "3.1.0"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
   s.summary       = "IP2Proxy Ruby library"
-  s.description   = "The official IP2Proxy Ruby library to detect VPN servers, open proxies, web proxies, Tor exit nodes, search engine robots, data center ranges and residential proxies using IP2Proxy BIN database. Other information available includes proxy type, country, state, city, ISP, domain name, usage type, AS number, AS name, threats and last seen date."
+  s.description   = "The official IP2Proxy Ruby library to detect VPN servers, open proxies, web proxies, Tor exit nodes, search engine robots, data center ranges and residential proxies using IP2Proxy BIN database. Other information available includes proxy type, country, state, city, ISP, domain name, usage type, AS number, AS name, threats, last seen date and provider names."
   s.homepage      = "https://github.com/ip2location/ip2proxy-ruby"
   s.licenses      = ["MIT"]
   s.require_paths = ["lib"]
@@ -31,10 +31,10 @@ Gem::Specification.new do |s|
     "lib/ip2proxy_ruby/i2p_string_data.rb",
     "lib/ip2proxy_ruby/ip2proxy_config.rb",
     "lib/ip2proxy_ruby/ip2proxy_record.rb",
-    "spec/assets/PX10.SAMPLE.BIN",
+    "spec/assets/PX11.SAMPLE.BIN",
     "spec/ip2proxy_ruby_database_spec.rb",
     "spec/spec_helper.rb",
-    "rb/data/PX10.SAMPLE.BIN"
+    "rb/data/PX11.SAMPLE.BIN"
   ]
 
   if s.respond_to?(:metadata=)

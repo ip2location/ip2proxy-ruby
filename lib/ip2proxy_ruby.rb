@@ -7,15 +7,36 @@ require_relative 'ip2proxy_ruby/i2p_ip_data'
 require_relative 'ip2proxy_ruby/ip2proxy_record'
 
 class Ip2proxy
-  attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday 
+  attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday, :last_err_msg
 
-  VERSION = '3.0.1'
+  VERSION = '3.1.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
+  INVALID_BIN_DATABASE = 'Incorrect IP2Proxy BIN file format. Please make sure that you are using the latest IP2Proxy BIN file.'
 
   def open(url)
-    self.file = File.open(File.expand_path url, 'rb')
+    if url == ''
+        self.last_err_msg = 'Ip2proxy.new.open() requires a database path name.'
+        abort('Ip2proxy.new.open() requires a database path name.')
+    end
+
+    begin
+        self.file = File.open(File.expand_path url, 'rb')
+    rescue
+        self.last_err_msg = 'Ip2proxy.new.open() error in opening ' + url +'.'
+        abort('Ip2proxy.new.open() error in opening ' + url +'.')
+    else
+    end
     i2p = Ip2proxyConfig.read(file)
+    if i2p.productcode == 2
+    else
+        if i2p.databaseyear <= 20 && i2p.productcode == 0
+        else
+            self.file.close
+            self.last_err_msg = INVALID_BIN_DATABASE
+            abort(INVALID_BIN_DATABASE)
+        end
+    end
     self.db_index = i2p.databasetype
     self.columns = i2p.databasecolumn + 0
     self.databaseyear = 2000 + i2p.databaseyear
@@ -35,6 +56,10 @@ class Ip2proxy
 
   def close()
     self.file.close
+  end
+
+  def get_last_error_message()
+    return self.last_err_msg
   end
 
   def get_module_version()
@@ -281,6 +306,21 @@ class Ip2proxy
     return isproxy
   end
 
+  def get_provider(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            provider = (defined?(rec.provider) && rec.provider != '') ? rec.provider : FIELD_NOT_SUPPORTED
+        else
+            provider = INVALID_IP_ADDRESS
+        end
+    else
+        provider = INVALID_IP_ADDRESS
+    end
+    return provider
+  end
+
   def get_all(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -298,6 +338,7 @@ class Ip2proxy
             as = (defined?(rec.as) && rec.as != '') ? rec.as : FIELD_NOT_SUPPORTED
             last_seen = (defined?(rec.lastseen) && rec.lastseen != '') ? rec.lastseen : FIELD_NOT_SUPPORTED
             threat = (defined?(rec.threat) && rec.threat != '') ? rec.threat : FIELD_NOT_SUPPORTED
+            provider = (defined?(rec.provider) && rec.provider != '') ? rec.provider : FIELD_NOT_SUPPORTED
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
@@ -316,6 +357,7 @@ class Ip2proxy
             as = INVALID_IP_ADDRESS
             last_seen = INVALID_IP_ADDRESS
             threat = INVALID_IP_ADDRESS
+            provider = INVALID_IP_ADDRESS
             isproxy = -1
         end
     else
@@ -331,6 +373,7 @@ class Ip2proxy
         as = INVALID_IP_ADDRESS
         last_seen = INVALID_IP_ADDRESS
         threat = INVALID_IP_ADDRESS
+        provider = INVALID_IP_ADDRESS
         isproxy = -1
     end
     results = {}
@@ -347,6 +390,7 @@ class Ip2proxy
     results['as'] = as
     results['last_seen'] = last_seen
     results['threat'] = threat
+    results['provider'] = provider
     return results
   end
 

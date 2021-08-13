@@ -2,21 +2,16 @@
 [![Total Downloads](https://img.shields.io/gem/dt/ip2proxy_ruby.svg)](https://rubygems.org/gems/ip2proxy_ruby)
 
 # IP2Proxy Ruby Library
-
-This module allows user to reverse search of IP address to detect VPN servers, open proxies, web proxies, Tor exit nodes, search engine robots, data center ranges and residential proxies using IP2Proxy BIN database. Other information available includes proxy type, country, state, city,  ISP, domain name, usage type, AS number, AS name, threats, last seen date and provider names.
-
-It lookup the proxy IP address from **IP2Proxy BIN Data** file. This data file can be downloaded at
-
-* Free IP2Proxy BIN Data: https://lite.ip2location.com
-* Commercial IP2Proxy BIN Data: https://www.ip2location.com/proxy-database
-
+This module allows user to reverse search of IP address to detect VPN servers, open proxies, web proxies, Tor exit nodes, search engine robots, data center ranges and residential proxies using IP2Proxy BIN database. Other information available includes proxy type, country, state, city,  ISP, domain name, usage type, AS number, AS name, threats, last seen date and provider names. It lookup the proxy IP address from **IP2Proxy BIN Data** file or web service.
 
 For more details, please visit:
 [https://www.ip2location.com/ip2proxy/developers/ruby](https://www.ip2location.com/ip2proxy/developers/ruby)
 
-## Methods
+# Usage
+You can check the **example.rb** file to learn more about usage.
 
-Below are the methods supported in this module.
+## BIN Database
+Below is the description of the functions available in the **BIN Database** lookup.
 
 |Method Name|Description|
 |---|---|
@@ -41,55 +36,14 @@ Below are the methods supported in this module.
 |get_threat|Return the threat types reported to proxy's IP address or domain name. Please see [Threat Type](#threat-type) for details.|
 |get_provider|Returns the VPN service provider name if available.|
 
-## Usage
+## Web Service
+Below is the description of the functions available in the **Web Service** lookup.
 
-```
-require 'ip2proxy_ruby'
-
-# open IP2Proxy BIN database for proxy lookup
-i2p = Ip2proxy.new.open("./data/IP2PROXY-IP-PROXYTYPE-COUNTRY-REGION-CITY-ISP-DOMAIN-USAGETYPE-ASN-LASTSEEN-THREAT-RESIDENTIAL-PROVIDER.BIN")
-
-# get versioning information
-print 'Module Version: ' + i2p.get_module_version + "\n"
-print 'Package Version: ' + i2p.get_package_version + "\n"
-print 'Database Version: ' + i2p.get_database_version + "\n"
-
-# individual proxy data check
-print 'Is Proxy: ' + i2p.is_proxy('1.2.3.4').to_s + "\n"
-print 'Proxy Type: ' + i2p.get_proxytype('1.2.3.4') + "\n"
-print 'Country Code: ' + i2p.get_country_short('1.2.3.4') + "\n"
-print 'Country Name: ' + i2p.get_country_long('1.2.3.4') + "\n"
-print 'Region Name: ' + i2p.get_region('1.2.3.4') + "\n"
-print 'City Name: ' + i2p.get_city('1.2.3.4') + "\n"
-print 'ISP: ' + i2p.get_isp('1.2.3.4') + "\n"
-print 'Domain: ' + i2p.get_domain('1.2.3.4') + "\n"
-print 'Usage Type: ' + i2p.get_usagetype('1.2.3.4') + "\n"
-print 'ASN: ' + i2p.get_asn('1.2.3.4') + "\n"
-print 'AS: ' + i2p.get_as('1.2.3.4') + "\n"
-print 'Last Seen: ' + i2p.get_last_seen('1.2.3.4') + "\n"
-print 'Threat: ' + i2p.get_threat('1.2.3.4') + "\n"
-print 'Provider: ' + i2p.get_provider('1.2.3.4') + "\n"
-
-# single function to get all proxy data returned in array
-record = i2p.get_all('1.2.3.4')
-print 'is Proxy: ' + record['is_proxy'].to_s + "\n"
-print 'Proxy Type: ' + record['proxy_type'] + "\n"
-print 'Country Code: ' + record['country_short'] + "\n"
-print 'Country Name: ' + record['country_long'] + "\n"
-print 'Region Name: ' + record['region'] + "\n"
-print 'City Name: ' + record['city'] + "\n"
-print 'ISP: ' + record['isp'] + "\n"
-print 'Domain: ' + record['domain'] + "\n"
-print 'Usage Type: ' + record['usagetype'] + "\n"
-print 'ASN: ' + record['asn'] + "\n"
-print 'AS: ' + record['as'] + "\n"
-print 'Last Seen: ' + record['last_seen'] + "\n"
-print 'Threat: ' + record['threat'] + "\n"
-print 'Provider: ' + record['provider'] + "\n"
-
-# close IP2Proxy BIN database
-i2p.close()
-```
+| Function Name | Description |
+|---|---|
+| Constructor | Expect 3 input parameters:<ol><li>IP2Proxy API Key.</li><li>Package (PX1 - PX11)</li></li><li>Use HTTPS or HTTP</li></ol> |
+| lookup | Return the proxy information in array.<ul><li>countryCode</li><li>countryName</li><li>regionName</li><li>cityName</li><li>isp</li><li>domain</li><li>usageType</li><li>asn</li><li>as</li><li>lastSeen</li><li>threat</li><li>proxyType</li><li>isProxy</li><li>provider</li><ul> |
+| get_credit | Return remaining credit of the web service account. |
 
 ### Proxy Type
 
@@ -128,7 +82,17 @@ i2p.close()
 |SCANNER|Security Scanner or Attack|
 |BOTNET|Spyware or Malware|
 
-## Support
+# Dependencies
+
+This library requires IP2Proxy BIN data file to function. You may download the BIN data file at
+* IP2Proxy LITE BIN Data (Free): https://lite.ip2location.com
+* IP2Proxy Commercial BIN Data (Comprehensive): https://www.ip2location.com/proxy-database
+
+An outdated BIN database was provided in the library for your testing. You are recommended to visit the above links to download the latest BIN database.
+
+You can also sign up for [IP2Proxy Web Service](https://www.ip2location.com/web-service/ip2proxy) to lookup by IP2Proxy API.
+
+# Support
 
 Email: support@ip2location.com  
 URL: [https://www.ip2location.com](https://www.ip2location.com)

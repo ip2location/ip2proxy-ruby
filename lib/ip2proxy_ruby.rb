@@ -1,5 +1,7 @@
 require 'bindata'
 require 'ipaddr'
+require 'net/http'
+require 'json'
 require_relative 'ip2proxy_ruby/ip2proxy_config'
 require_relative 'ip2proxy_ruby/i2p_database_config'
 require_relative 'ip2proxy_ruby/i2p_string_data'
@@ -9,7 +11,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday, :last_err_msg
 
-  VERSION = '3.1.0'
+  VERSION = '3.2.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
   INVALID_BIN_DATABASE = 'Incorrect IP2Proxy BIN file format. Please make sure that you are using the latest IP2Proxy BIN file.'
@@ -469,4 +471,55 @@ class Ip2proxy
 
   private :get_record, :bsearch, :get_from_to, :read32, :readipv6
 
+end
+
+class Ip2proxyWebService
+  attr_accessor :ws_api_key, :ws_package, :ws_use_ssl
+
+  def initialize(api_key, package, use_ssl)
+    if !api_key.match(/^[0-9A-Z]{10}$/) && api_key != 'demo'
+      raise Exception.new "Please provide a valid IP2Proxy web service API key."
+    end
+    if !package.match(/^PX[0-9]+$/)
+      package = 'PX1'
+    end
+    if use_ssl == ''
+      use_ssl = true
+    end
+    self.ws_api_key = api_key
+    self.ws_package = package
+    self.ws_use_ssl = use_ssl
+  end
+
+  def lookup(ip)
+    if self.ws_use_ssl
+      response =  Net::HTTP.get(URI("https://api.ip2proxy.com/?key=" + self.ws_api_key + "&ip=" + ip + "&package=" + self.ws_package + "&format=json"))
+    else
+      response =  Net::HTTP.get(URI("http://api.ip2proxy.com/?key=" + self.ws_api_key + "&ip=" + ip + "&package=" + self.ws_package + "&format=json"))
+    end
+    parsed_response = JSON.parse(response)
+    if parsed_response.nil?
+      return false
+    end
+    if parsed_response["response"] != "OK"
+      raise Exception.new "Error: " + parsed_response["response"]
+    end
+    return parsed_response
+  end
+
+  def get_credit()
+    if self.ws_use_ssl
+      response =  Net::HTTP.get(URI("https://api.ip2proxy.com/?key=" + self.ws_api_key + "&check=true"))
+    else
+      response =  Net::HTTP.get(URI("http://api.ip2proxy.com/?key=" + self.ws_api_key + "&check=true"))
+    end
+    parsed_response = JSON.parse(response)
+    if parsed_response.nil?
+      return 0
+    end
+    if parsed_response["response"].nil?
+      return 0
+    end
+    return parsed_response["response"]
+  end
 end

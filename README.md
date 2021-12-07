@@ -11,6 +11,8 @@ For more details, please visit:
 You can check the **example.rb** file to learn more about usage.
 
 ## BIN Database
+An outdated BIN database was provided in the library for your testing. You are recommended to visit the [links](#dependencies) to download the latest BIN database and save it in the ```rb``` folder.
+
 Below is the description of the functions available in the **BIN Database** lookup.
 
 |Method Name|Description|
@@ -87,8 +89,6 @@ Below is the description of the functions available in the **Web Service** looku
 This library requires IP2Proxy BIN data file to function. You may download the BIN data file at
 * IP2Proxy LITE BIN Data (Free): https://lite.ip2location.com
 * IP2Proxy Commercial BIN Data (Comprehensive): https://www.ip2location.com/proxy-database
-
-An outdated BIN database was provided in the library for your testing. You are recommended to visit the above links to download the latest BIN database.
 
 You can also sign up for [IP2Proxy Web Service](https://www.ip2location.com/web-service/ip2proxy) to lookup by IP2Proxy API.
 

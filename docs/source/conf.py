@@ -6,7 +6,7 @@
 # -- Project information
 
 project = 'IP2Proxy Ruby'
-copyright = '2023, IP2Location'
+copyright = '2024, IP2Location'
 author = 'IP2Location'
 
 release = '0.1.0'
@@ -59,6 +59,6 @@ html_logo = 'images/ipl-logo-square-1200.png'
 # Favicon
 html_favicon = 'images/favicon.ico'
 
-html_title = "IP2Proxy PHP"
+html_title = "IP2Proxy Ruby"
 
 # html_baseurl = "https://ip2proxy-ruby.readthedocs.io/en/latest/"

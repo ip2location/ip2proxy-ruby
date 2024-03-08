@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "3.3.0"
+  s.version       = "3.3.1"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
@@ -49,18 +49,18 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<bindata>, [">= 0"])
+      s.add_runtime_dependency(%q<bindata>, ["~> 2.4.15"])
       s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_development_dependency(%q<rdoc>, [">= 6.3.1"])
       s.add_development_dependency(%q<bundler>, [">= 1.2.0"])
     else
-      s.add_dependency(%q<bindata>, [">= 0"])
+      s.add_dependency(%q<bindata>, ["~> 2.4.15"])
       s.add_dependency(%q<rspec>, ["~> 2.8.0"])
       s.add_dependency(%q<rdoc>, [">= 6.3.1"])
       s.add_dependency(%q<bundler>, [">= 1.2.0"])
     end
   else
-    s.add_dependency(%q<bindata>, [">= 0"])
+    s.add_dependency(%q<bindata>, ["~> 2.4.15"])
     s.add_dependency(%q<rspec>, ["~> 2.8.0"])
     s.add_dependency(%q<rdoc>, [">= 6.3.1"])
     s.add_dependency(%q<bundler>, [">= 1.2.0"])

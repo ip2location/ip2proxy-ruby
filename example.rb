@@ -43,10 +43,3 @@ print 'Provider: ' + record['provider'] + "\n"
 
 # close IP2Proxy BIN database
 i2p.close()
-
-# Web Service
-ws = Ip2proxyWebService.new('demo', 'PX11', true)
-record = ws.lookup('1.2.3.4')
-print record
-print "\n"
-print ws.get_credit()

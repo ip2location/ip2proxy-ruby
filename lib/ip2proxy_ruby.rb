@@ -11,7 +11,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday, :last_err_msg
 
-  VERSION = '3.3.1'
+  VERSION = '3.4.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
   INVALID_BIN_DATABASE = 'Incorrect IP2Proxy BIN file format. Please make sure that you are using the latest IP2Proxy BIN file.'
@@ -322,6 +322,21 @@ class Ip2proxy
     return provider
   end
 
+  def get_fraud_score(ip)
+    valid = !(IPAddr.new(ip) rescue nil).nil?
+    if valid
+        rec = get_record(ip)
+        if !(rec.nil?)
+            fraud_score = (defined?(rec.fraud_score) && rec.fraud_score != '') ? rec.fraud_score : FIELD_NOT_SUPPORTED
+        else
+            fraud_score = INVALID_IP_ADDRESS
+        end
+    else
+        fraud_score = INVALID_IP_ADDRESS
+    end
+    return fraud_score
+  end
+
   def get_all(ip)
     valid = !(IPAddr.new(ip) rescue nil).nil?
     if valid
@@ -340,6 +355,7 @@ class Ip2proxy
             last_seen = (defined?(rec.lastseen) && rec.lastseen != '') ? rec.lastseen : FIELD_NOT_SUPPORTED
             threat = (defined?(rec.threat) && rec.threat != '') ? rec.threat : FIELD_NOT_SUPPORTED
             provider = (defined?(rec.provider) && rec.provider != '') ? rec.provider : FIELD_NOT_SUPPORTED
+            fraud_score = (defined?(rec.fraud_score) && rec.fraud_score != '') ? rec.fraud_score : FIELD_NOT_SUPPORTED
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
@@ -359,6 +375,7 @@ class Ip2proxy
             last_seen = INVALID_IP_ADDRESS
             threat = INVALID_IP_ADDRESS
             provider = INVALID_IP_ADDRESS
+            fraud_score = INVALID_IP_ADDRESS
             isproxy = -1
         end
     else
@@ -375,6 +392,7 @@ class Ip2proxy
         last_seen = INVALID_IP_ADDRESS
         threat = INVALID_IP_ADDRESS
         provider = INVALID_IP_ADDRESS
+        fraud_score = INVALID_IP_ADDRESS
         isproxy = -1
     end
     results = {}
@@ -392,6 +410,7 @@ class Ip2proxy
     results['last_seen'] = last_seen
     results['threat'] = threat
     results['provider'] = provider
+    results['fraud_score'] = fraud_score
     return results
   end
 

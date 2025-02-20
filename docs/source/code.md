@@ -1,15 +1,14 @@
 # IP2Proxy Ruby API
 
 ## Database Class
-```{py:function} open(database_file_path, file_mode)
+```{py:function} open(database_file_path)
 Load the IP2Proxy BIN database.
 
 :param str database_file_path: (Required) The file path links to IP2Location BIN databases.
-:param str file_mode: (Optional) Caching mode (one of FILE_IO, MEMORY_CACHE, or SHARED_MEMORY).
 ```
 
 ```{py:function} get_package_version()
-Return the database's type, 1 to 10 respectively for PX1 to PX11. Please visit https://www.ip2location.com/databases/ip2proxy for details.
+Return the database's type, 1 to 12 respectively for PX1 to PX12. Please visit https://www.ip2location.com/databases/ip2proxy for details.
 
 :return: Returns the package version.
 :rtype: string
@@ -40,17 +39,18 @@ Retrieve geolocation information for an IP address.
 
 | Field Name       | Description                                                  |
 | ---------------- | ------------------------------------------------------------ |
-| countryCode    |     Two-character country code based on ISO 3166. |
-| countryName    |     Country name based on ISO 3166. |
-| regionName     |     Region or state name. |
-| cityName       |     City name. |
-| isp            |     Internet Service Provider or company\'s name. |
-| domain         |     Internet domain name associated with IP address range. |
-| usageType      |     Usage type classification of ISP or company. |
-| asn            |     Autonomous system number (ASN). |
-| as             |     Autonomous system (AS) name. |
-| lastSeen       |     Proxy last seen in days. |
-| threat         |     Security threat reported. |
-| proxyType      |     Type of proxy. |
-| provider       |     Name of VPN provider if available. |
+| country_short    |     Two-character country code based on ISO 3166. |
+| country_long     |     Country name based on ISO 3166. |
+| region           |     Region or state name. |
+| city             |     City name. |
+| isp              |     Internet Service Provider or company\'s name. |
+| domain           |     Internet domain name associated with IP address range. |
+| usagetype        |     Usage type classification of ISP or company. |
+| asn              |     Autonomous system number (ASN). |
+| as               |     Autonomous system (AS) name. |
+| last_seen        |     Proxy last seen in days. |
+| threat           |     Security threat reported. |
+| is_proxy         |     Type of proxy. |
+| provider         |     Name of VPN provider if available. |
+| fraud_score      |     Potential risk score (0 - 99) associated with IP address. |
 ```

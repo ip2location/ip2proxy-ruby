@@ -1,7 +1,7 @@
 require 'ip2proxy_ruby'
 
 # open IP2Proxy BIN database for proxy lookup
-i2p = Ip2proxy.new.open("./data/PX11.SAMPLE.BIN")
+i2p = Ip2proxy.new.open("./data/PX12.SAMPLE.BIN")
 
 # get versioning information
 print 'Module Version: ' + i2p.get_module_version + "\n"
@@ -23,6 +23,7 @@ print 'AS: ' + i2p.get_as('1.2.3.4') + "\n"
 print 'Last Seen: ' + i2p.get_last_seen('1.2.3.4') + "\n"
 print 'Threat: ' + i2p.get_threat('1.2.3.4') + "\n"
 print 'Provider: ' + i2p.get_provider('1.2.3.4') + "\n"
+print 'Fraud Score: ' + i2p.get_fraud_score('1.2.3.4') + "\n"
 
 # single function to get all proxy data returned in array
 record = i2p.get_all('1.2.3.4')
@@ -40,6 +41,7 @@ print 'AS: ' + record['as'] + "\n"
 print 'Last Seen: ' + record['last_seen'] + "\n"
 print 'Threat: ' + record['threat'] + "\n"
 print 'Provider: ' + record['provider'] + "\n"
+print 'Fraud Score: ' + record['fraud_score'] + "\n"
 
 # close IP2Proxy BIN database
 i2p.close()

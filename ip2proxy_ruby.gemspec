@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "3.3.1"
+  s.version       = "3.4.0"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
@@ -31,15 +31,16 @@ Gem::Specification.new do |s|
     "lib/ip2proxy_ruby/i2p_string_data.rb",
     "lib/ip2proxy_ruby/ip2proxy_config.rb",
     "lib/ip2proxy_ruby/ip2proxy_record.rb",
-    "spec/assets/PX11.SAMPLE.BIN",
+    "spec/assets/PX12.SAMPLE.BIN",
     "spec/ip2proxy_ruby_database_spec.rb",
     "spec/spec_helper.rb",
-    "rb/data/PX11.SAMPLE.BIN"
+    "rb/data/PX12.SAMPLE.BIN"
   ]
 
   if s.respond_to?(:metadata=)
     s.metadata = {
       "bug_tracker_uri" => "https://github.com/ip2location/ip2proxy-ruby/issues",
+      "documentation_uri" => "https://www.rubydoc.info/gems/ip2proxy_ruby",
       "homepage_uri" => "https://www.ip2location.com",
       "source_code_uri" => "https://github.com/ip2location/ip2proxy-ruby",
     }

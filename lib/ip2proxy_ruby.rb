@@ -11,7 +11,7 @@ require_relative 'ip2proxy_ruby/ip2proxy_record'
 class Ip2proxy
   attr_accessor :record_class4, :record_class6, :v4, :file, :db_index, :count, :base_addr, :ipno, :record, :database, :columns, :ip_version, :ipv4databasecount, :ipv4databaseaddr, :ipv4indexbaseaddr, :ipv6databasecount, :ipv6databaseaddr, :ipv6indexbaseaddr, :databaseyear, :databasemonth, :databaseday, :last_err_msg
 
-  VERSION = '3.4.0'
+  VERSION = '3.5.0'
   FIELD_NOT_SUPPORTED = 'NOT SUPPORTED'
   INVALID_IP_ADDRESS = 'INVALID IP ADDRESS'
   INVALID_BIN_DATABASE = 'Incorrect IP2Proxy BIN file format. Please make sure that you are using the latest IP2Proxy BIN file.'
@@ -296,7 +296,7 @@ class Ip2proxy
             if self.db_index == 1
                 isproxy = (rec.country_short == '-') ? 0 : 1
             else
-                isproxy = (rec.proxytype == '-') ? 0 : (rec.proxytype == 'DCH' || rec.proxytype == 'SES') ? 2 : 1
+                isproxy = (rec.proxytype == '-') ? 0 : (rec.proxytype == 'DCH' || rec.proxytype == 'SES' || rec.proxytype == 'AIC') ? 2 : 1
             end
         else
             isproxy = -1

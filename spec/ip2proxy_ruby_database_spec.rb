@@ -112,7 +112,7 @@ describe "Ip2proxy" do
   it "work correctly with get_module_version" do
     i2p = Ip2proxy.new.open(File.dirname(__FILE__) + "/assets/PX12.SAMPLE.BIN")
     record = i2p.get_module_version()
-    expect(record).to eq '3.4.0'
+    expect(record).to eq '3.5.0'
   end
 
   it "work correctly with get_package_version" do

@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = "ip2proxy_ruby"
-  s.version       = "3.5.0"
+  s.version       = "3.5.1"
   s.authors       = ["ip2location"]
   s.email         = ["support@ip2location.com"]
 
@@ -37,33 +37,17 @@ Gem::Specification.new do |s|
     "rb/data/PX12.SAMPLE.BIN"
   ]
 
-  if s.respond_to?(:metadata=)
-    s.metadata = {
-      "bug_tracker_uri" => "https://github.com/ip2location/ip2proxy-ruby/issues",
-      "documentation_uri" => "https://www.rubydoc.info/gems/ip2proxy_ruby",
-      "homepage_uri" => "https://www.ip2location.com",
-      "source_code_uri" => "https://github.com/ip2location/ip2proxy-ruby",
-    }
-  end
+  s.metadata = {
+    "bug_tracker_uri" => "https://github.com/ip2location/ip2proxy-ruby/issues",
+    "documentation_uri" => "https://www.rubydoc.info/gems/ip2proxy_ruby",
+    "homepage_uri" => "https://www.ip2location.com",
+    "source_code_uri" => "https://github.com/ip2location/ip2proxy-ruby",
+  }
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 4
+  s.required_ruby_version = ">= 3.0"
+  s.add_runtime_dependency "bindata", "~> 3.0"
+  s.add_development_dependency "rspec", "~> 3.13"
+  s.add_development_dependency "rdoc", ">= 6.3.1"
+  s.add_development_dependency "bundler", ">= 2.4"
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<bindata>, ["~> 2.4.15"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
-      s.add_development_dependency(%q<rdoc>, [">= 6.3.1"])
-      s.add_development_dependency(%q<bundler>, [">= 1.2.0"])
-    else
-      s.add_dependency(%q<bindata>, ["~> 2.4.15"])
-      s.add_dependency(%q<rspec>, ["~> 2.8.0"])
-      s.add_dependency(%q<rdoc>, [">= 6.3.1"])
-      s.add_dependency(%q<bundler>, [">= 1.2.0"])
-    end
-  else
-    s.add_dependency(%q<bindata>, ["~> 2.4.15"])
-    s.add_dependency(%q<rspec>, ["~> 2.8.0"])
-    s.add_dependency(%q<rdoc>, [">= 6.3.1"])
-    s.add_dependency(%q<bundler>, [">= 1.2.0"])
-  end
 end
